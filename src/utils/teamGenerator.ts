@@ -47,17 +47,18 @@ export const generateTeams = (
   const men = participants.filter(p => p.gender === 'male');
   const women = participants.filter(p => p.gender === 'female');
 
-  // Validate if we have enough participants of each gender
+  // Validate if we have enough participants of each gender - Relaxed validation
   const totalMenNeeded = requirements.menPerTeam * teamCount;
   const totalWomenNeeded = requirements.womenPerTeam * teamCount;
 
-  if (men.length < totalMenNeeded) {
-    throw new Error(`Não há homens suficientes. Necessário: ${totalMenNeeded}, Disponível: ${men.length}`);
-  }
+  // Removed strict error throwing for insufficient players based on requirements
+  // if (men.length < totalMenNeeded) {
+  //   throw new Error(`Não há homens suficientes. Necessário: ${totalMenNeeded}, Disponível: ${men.length}`);
+  // }
 
-  if (women.length < totalWomenNeeded) {
-    throw new Error(`Não há mulheres suficientes. Necessário: ${totalWomenNeeded}, Disponível: ${women.length}`);
-  }
+  // if (women.length < totalWomenNeeded) {
+  //   throw new Error(`Não há mulheres suficientes. Necessário: ${totalWomenNeeded}, Disponível: ${women.length}`);
+  // }
 
   // Shuffle both groups
   const shuffledMen = shuffleArray(men);
