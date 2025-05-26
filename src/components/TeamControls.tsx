@@ -39,11 +39,10 @@ const TeamControls: React.FC<TeamControlsProps> = ({
           <input
             type="number"
             id="teamCount"
-            min="1"
             value={teamCount}
             onChange={(e) => onTeamCountChange(parseInt(e.target.value) || 1)}
-            className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
-            disabled={participantsCount < 2}
+            className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all 
+            [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
           />
         </div>
 
