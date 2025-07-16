@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { Analytics } from "@vercel/analytics/react";
 import Header from './components/Header';
 import ParticipantInput from './components/ParticipantInput';
 import ParticipantList from './components/ParticipantList';
@@ -149,6 +150,7 @@ function App() {
       </main>
       
       <Footer />
+      <Analytics />
     </div>
   );
 }
