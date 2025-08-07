@@ -23,10 +23,10 @@ const TeamDisplay: React.FC<TeamDisplayProps> = ({ teams }) => {
   }
 
   return (
-    <div className="mt-8 animate-fade-in">
-      <h2 className="text-xl font-medium text-gray-800 mb-4">Times Sorteados</h2>
+    <div className="mt-6 sm:mt-8 animate-fade-in">
+      <h2 className="text-lg sm:text-xl font-medium text-gray-800 mb-3 sm:mb-4">Times Sorteados</h2>
       
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4">
         {teams.map((team, index) => {
           const men = team.filter(p => p.gender === 'male');
           const women = team.filter(p => p.gender === 'female');
@@ -34,34 +34,34 @@ const TeamDisplay: React.FC<TeamDisplayProps> = ({ teams }) => {
           return (
             <div 
               key={index}
-              className={`p-4 rounded-lg border ${teamColors[index % teamColors.length]} transition-all hover:shadow-md`}
+              className={`p-3 sm:p-4 rounded-lg border ${teamColors[index % teamColors.length]} transition-all hover:shadow-md`}
             >
-              <div className="flex items-center justify-between mb-3">
-                <div className="flex items-center">
-                  <Users className="h-5 w-5 mr-2 text-gray-700" />
-                  <h3 className="text-lg font-medium text-gray-800">Time {index + 1}</h3>
+              <div className="flex items-center justify-between mb-2 sm:mb-3">
+                <div className="flex items-center min-w-0">
+                  <Users className="h-4 w-4 sm:h-5 sm:w-5 mr-1 sm:mr-2 text-gray-700 flex-shrink-0" />
+                  <h3 className="text-base sm:text-lg font-medium text-gray-800 truncate">Time {index + 1}</h3>
                 </div>
-                <div className="flex items-center gap-3 text-sm">
+                <div className="flex items-center gap-2 sm:gap-3 text-xs sm:text-sm flex-shrink-0">
                   <span className="flex items-center">
-                    <Male className="h-4 w-4 text-blue-600 mr-1" />
+                    <Male className="h-3 w-3 sm:h-4 sm:w-4 text-blue-600 mr-1" />
                     {men.length}
                   </span>
                   <span className="flex items-center">
-                    <Female className="h-4 w-4 text-pink-600 mr-1" />
+                    <Female className="h-3 w-3 sm:h-4 sm:w-4 text-pink-600 mr-1" />
                     {women.length}
                   </span>
                 </div>
               </div>
               
               {men.length > 0 && (
-                <div className="mb-3">
-                  <h4 className="text-sm font-medium text-gray-700 mb-2 flex items-center">
-                    <Male className="h-4 w-4 text-blue-600 mr-1" />
+                <div className="mb-2 sm:mb-3">
+                  <h4 className="text-xs sm:text-sm font-medium text-gray-700 mb-1 sm:mb-2 flex items-center">
+                    <Male className="h-3 w-3 sm:h-4 sm:w-4 text-blue-600 mr-1" />
                     Homens
                   </h4>
                   <ul className="space-y-1">
                     {men.map((member, memberIndex) => (
-                      <li key={memberIndex} className="py-1 px-2 bg-white bg-opacity-60 rounded text-sm">
+                      <li key={memberIndex} className="py-1 px-2 bg-white dark:bg-gray-600 bg-opacity-60 dark:bg-opacity-80 rounded text-xs sm:text-sm truncate">
                         {member.name}
                       </li>
                     ))}
@@ -71,13 +71,13 @@ const TeamDisplay: React.FC<TeamDisplayProps> = ({ teams }) => {
               
               {women.length > 0 && (
                 <div>
-                  <h4 className="text-sm font-medium text-gray-700 mb-2 flex items-center">
-                    <Female className="h-4 w-4 text-pink-600 mr-1" />
+                  <h4 className="text-xs sm:text-sm font-medium text-gray-700 mb-1 sm:mb-2 flex items-center">
+                    <Female className="h-3 w-3 sm:h-4 sm:w-4 text-pink-600 mr-1" />
                     Mulheres
                   </h4>
                   <ul className="space-y-1">
                     {women.map((member, memberIndex) => (
-                      <li key={memberIndex} className="py-1 px-2 bg-white bg-opacity-60 rounded text-sm">
+                      <li key={memberIndex} className="py-1 px-2 bg-white dark:bg-gray-600 bg-opacity-60 dark:bg-opacity-80 rounded text-xs sm:text-sm truncate">
                         {member.name}
                       </li>
                     ))}
