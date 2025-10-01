@@ -1,4 +1,5 @@
 import React from 'react';
+import volleyballIcon from '../assets/bola-de-voleibol.png';
 
 interface SidebarProps {
   activeScreen: string;
@@ -50,7 +51,7 @@ const Sidebar: React.FC<SidebarProps> = ({ activeScreen, onScreenChange }) => {
     <div className="w-64 bg-white dark:bg-gray-800 shadow-lg h-screen flex flex-col">
       <div className="p-4 sm:p-6 border-b border-gray-200 dark:border-gray-700">
         <div className="flex items-center space-x-3">
-          <img src="/src/assets/bola-de-voleibol.png" alt="Bola de Vôlei" className="w-6 h-6 sm:w-8 sm:h-8" />
+          <img src={volleyballIcon} alt="Bola de Vôlei" className="w-6 h-6 sm:w-8 sm:h-8" />
           <h1 className="text-lg sm:text-xl font-bold text-gray-800 dark:text-gray-200">Sorteio Vôlei</h1>
         </div>
       </div>
