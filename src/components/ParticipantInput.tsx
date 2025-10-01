@@ -22,6 +22,7 @@ const ParticipantInput: React.FC<ParticipantInputProps> = ({ onAddParticipant })
         setGender(detectedGender);
         setIsAutoDetected(true);
       } else {
+        // If detection returns 'unisex' or 'unknown', don't auto-detect
         setIsAutoDetected(false);
       }
     } else {
