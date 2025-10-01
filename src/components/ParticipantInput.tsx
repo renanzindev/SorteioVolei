@@ -1,6 +1,7 @@
-import React, { useState } from 'react';
-import { UserPlus } from 'lucide-react';
+import React, { useState, useEffect } from 'react';
+import { UserPlus, Sparkles } from 'lucide-react';
 import type { Participant } from '../utils/teamGenerator';
+import { detect } from 'gender-detection';
 
 interface ParticipantInputProps {
   onAddParticipant: (participant: Participant) => void;
@@ -9,13 +10,37 @@ interface ParticipantInputProps {
 const ParticipantInput: React.FC<ParticipantInputProps> = ({ onAddParticipant }) => {
   const [name, setName] = useState('');
   const [gender, setGender] = useState<'male' | 'female'>('male');
+  const [isAutoDetected, setIsAutoDetected] = useState(false);
+
+  // Auto-detect gender when name changes
+  useEffect(() => {
+    if (name.trim()) {
+      const firstName = name.trim().split(' ')[0];
+      const detectedGender = detect(firstName);
+      
+      if (detectedGender === 'male' || detectedGender === 'female') {
+        setGender(detectedGender);
+        setIsAutoDetected(true);
+      } else {
+        setIsAutoDetected(false);
+      }
+    } else {
+      setIsAutoDetected(false);
+    }
+  }, [name]);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (name.trim()) {
       onAddParticipant({ name: name.trim(), gender });
       setName('');
+      setIsAutoDetected(false);
     }
+  };
+
+  const handleGenderSelect = (selectedGender: 'male' | 'female') => {
+    setGender(selectedGender);
+    setIsAutoDetected(false); // Manual selection overrides auto-detection
   };
 
   return (
@@ -30,29 +55,39 @@ const ParticipantInput: React.FC<ParticipantInputProps> = ({ onAddParticipant })
           aria-label="Nome do participante"
         />
       </div>
-      <div className="flex gap-2 sm:gap-2">
-        <button
-          type="button"
-          onClick={() => setGender('male')}
-          className={`flex-1 py-2 px-3 sm:py-3 sm:px-6 text-xs sm:text-sm rounded-lg transition-colors border ${
-            gender === 'male'
-              ? 'bg-blue-600 text-white border-blue-600'
-              : 'bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-200 hover:bg-gray-200 dark:hover:bg-gray-600 border-gray-300 dark:border-gray-600'
-          }`}
-        >
-          Homem
-        </button>
-        <button
-          type="button"
-          onClick={() => setGender('female')}
-          className={`flex-1 py-2 px-3 sm:py-3 sm:px-6 text-xs sm:text-sm rounded-lg transition-colors border ${
-            gender === 'female'
-              ? 'bg-pink-600 text-white border-pink-600'
-              : 'bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-200 hover:bg-gray-200 dark:hover:bg-gray-600 border-gray-300 dark:border-gray-600'
-          }`}
-        >
-          Mulher
-        </button>
+      <div className="flex flex-col gap-2">
+        {isAutoDetected && (
+          <div className="flex items-center justify-center text-xs text-green-600 dark:text-green-400">
+            <Sparkles className="h-3 w-3 mr-1" />
+            <span>Gênero detectado automaticamente</span>
+          </div>
+        )}
+        <div className="flex gap-2 sm:gap-2">
+          <button
+            type="button"
+            onClick={() => handleGenderSelect('male')}
+            className={`flex-1 py-2 px-3 sm:py-3 sm:px-6 text-xs sm:text-sm rounded-lg transition-colors border ${
+              gender === 'male'
+                ? `${isAutoDetected ? 'bg-green-600 border-green-600' : 'bg-blue-600 border-blue-600'} text-white`
+                : 'bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-200 hover:bg-gray-200 dark:hover:bg-gray-600 border-gray-300 dark:border-gray-600'
+            }`}
+          >
+            {isAutoDetected && gender === 'male' && <Sparkles className="inline h-3 w-3 mr-1" />}
+            Homem
+          </button>
+          <button
+            type="button"
+            onClick={() => handleGenderSelect('female')}
+            className={`flex-1 py-2 px-3 sm:py-3 sm:px-6 text-xs sm:text-sm rounded-lg transition-colors border ${
+              gender === 'female'
+                ? `${isAutoDetected ? 'bg-green-600 border-green-600' : 'bg-pink-600 border-pink-600'} text-white`
+                : 'bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-200 hover:bg-gray-200 dark:hover:bg-gray-600 border-gray-300 dark:border-gray-600'
+            }`}
+          >
+            {isAutoDetected && gender === 'female' && <Sparkles className="inline h-3 w-3 mr-1" />}
+            Mulher
+          </button>
+        </div>
       </div>
       <button
         type="submit"
