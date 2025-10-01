@@ -65,9 +65,6 @@ const Footer: React.FC<FooterProps> = ({ activeScreen, onScreenChange }) => {
       )}
       
       {/* Copyright */}
-      <div className="py-3 text-center text-gray-500 dark:text-gray-400 text-xs border-t border-gray-100 dark:border-gray-700">
-        <p>© {new Date().getFullYear()} Sorteador de Times. Todos os direitos reservados.</p>
-      </div>
     </footer>
   );
 };

@@ -87,7 +87,7 @@ const TeamControls: React.FC<TeamControlsProps> = ({
         <button
           onClick={onGenerateTeams}
           disabled={participantsCount < 2}
-          className="flex-1 sm:flex-none bg-blue-600 hover:bg-blue-700 disabled:bg-gray-400 dark:disabled:bg-gray-600 text-white font-medium py-2 px-4 sm:py-3 sm:px-6 text-sm sm:text-base rounded-lg transition-colors flex items-center justify-center border border-blue-600 hover:border-blue-700 disabled:border-gray-400 dark:disabled:border-gray-600"
+          className="flex-1 sm:flex-none bg-green-600 hover:bg-green-700 disabled:bg-gray-400 dark:disabled:bg-gray-600 text-white font-bold py-3 px-6 sm:py-4 sm:px-8 text-sm sm:text-base rounded-lg transition-all duration-200 flex items-center justify-center border-2 border-green-600 hover:border-green-700 disabled:border-gray-400 dark:disabled:border-gray-600 shadow-lg hover:shadow-xl transform hover:scale-105 disabled:transform-none disabled:shadow-none"
         >
           <Shuffle className="mr-1 sm:mr-2 h-4 w-4 sm:h-5 sm:w-5" />
           <span className="hidden sm:inline">{teamsGenerated ? 'Sortear Novamente' : 'Sortear Times'}</span>

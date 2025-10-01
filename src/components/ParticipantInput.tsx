@@ -67,32 +67,38 @@ const ParticipantInput: React.FC<ParticipantInputProps> = ({ onAddParticipant })
           <button
             type="button"
             onClick={() => handleGenderSelect('male')}
-            className={`flex-1 py-2 px-3 sm:py-3 sm:px-6 text-xs sm:text-sm rounded-lg transition-colors border ${
+            className={`flex-1 py-2 px-3 sm:py-3 sm:px-6 text-xs sm:text-sm rounded-lg transition-all duration-200 border-2 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 dark:focus:ring-offset-gray-800 ${
               gender === 'male'
-                ? `${isAutoDetected ? 'bg-green-600 border-green-600' : 'bg-blue-600 border-blue-600'} text-white`
-                : 'bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-200 hover:bg-gray-200 dark:hover:bg-gray-600 border-gray-300 dark:border-gray-600'
+                ? `${isAutoDetected ? 'bg-green-600 border-green-600 shadow-lg' : 'bg-blue-600 border-blue-600 shadow-lg'} text-white`
+                : 'bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-200 hover:bg-blue-50 dark:hover:bg-gray-600 hover:border-blue-300 dark:hover:border-blue-500 border-gray-300 dark:border-gray-600 hover:shadow-md'
             }`}
           >
-            {isAutoDetected && gender === 'male' && <Sparkles className="inline h-3 w-3 mr-1" />}
-            Homem
+            <span className="flex items-center justify-center">
+              {isAutoDetected && gender === 'male' && <Sparkles className="inline h-3 w-3 mr-1" />}
+              <span className="mr-1 text-sm">♂</span>
+              Homem
+            </span>
           </button>
           <button
             type="button"
             onClick={() => handleGenderSelect('female')}
-            className={`flex-1 py-2 px-3 sm:py-3 sm:px-6 text-xs sm:text-sm rounded-lg transition-colors border ${
+            className={`flex-1 py-2 px-3 sm:py-3 sm:px-6 text-xs sm:text-sm rounded-lg transition-all duration-200 border-2 focus:outline-none focus:ring-2 focus:ring-pink-500 focus:ring-offset-2 dark:focus:ring-offset-gray-800 ${
               gender === 'female'
-                ? `${isAutoDetected ? 'bg-green-600 border-green-600' : 'bg-pink-600 border-pink-600'} text-white`
-                : 'bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-200 hover:bg-gray-200 dark:hover:bg-gray-600 border-gray-300 dark:border-gray-600'
+                ? `${isAutoDetected ? 'bg-green-600 border-green-600 shadow-lg' : 'bg-pink-700 border-pink-700 shadow-lg'} text-white`
+                : 'bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-200 hover:bg-pink-50 dark:hover:bg-gray-600 hover:border-pink-300 dark:hover:border-pink-500 border-gray-300 dark:border-gray-600 hover:shadow-md'
             }`}
           >
-            {isAutoDetected && gender === 'female' && <Sparkles className="inline h-3 w-3 mr-1" />}
-            Mulher
+            <span className="flex items-center justify-center">
+              {isAutoDetected && gender === 'female' && <Sparkles className="inline h-3 w-3 mr-1" />}
+              <span className="mr-1 text-sm">♀</span>
+              Mulher
+            </span>
           </button>
         </div>
       </div>
       <button
         type="submit"
-        className="bg-blue-600 hover:bg-blue-700 disabled:bg-gray-400 dark:disabled:bg-gray-600 text-white font-medium py-2 px-4 sm:py-3 sm:px-6 text-sm sm:text-base rounded-lg transition-colors flex items-center justify-center min-w-0 border border-blue-600 hover:border-blue-700 disabled:border-gray-400 dark:disabled:border-gray-600"
+        className="bg-gray-600 hover:bg-gray-700 disabled:bg-gray-400 dark:bg-gray-700 dark:hover:bg-gray-600 dark:disabled:bg-gray-600 text-white font-medium py-2 px-4 sm:py-3 sm:px-6 text-sm sm:text-base rounded-lg transition-colors flex items-center justify-center min-w-0 border border-gray-600 hover:border-gray-700 disabled:border-gray-400 dark:border-gray-700 dark:hover:border-gray-600 dark:disabled:border-gray-600"
         disabled={!name.trim()}
       >
         <UserPlus className="mr-1 sm:mr-2 h-4 w-4 sm:h-5 sm:w-5" />

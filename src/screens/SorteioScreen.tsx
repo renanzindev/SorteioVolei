@@ -100,11 +100,18 @@ const SorteioScreen: React.FC = () => {
 
   return (
     <div className="p-4 sm:p-6">
-      <h2 className="text-xl sm:text-2xl font-bold text-gray-800 dark:text-gray-200 mb-4 sm:mb-6">Sorteio de Times</h2>
+      {/* Título principal maior como âncora visual */}
+      <h1 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-gray-800 dark:text-gray-200 mb-6 sm:mb-8 text-center">
+        Sorteio de Times
+      </h1>
       
       <div className="space-y-6 sm:space-y-8">
-        <section>
-          <h3 className="text-lg sm:text-xl font-semibold text-gray-800 dark:text-gray-200 mb-3 sm:mb-4">Adicionar Participantes</h3>
+        {/* Seção de Participantes */}
+        <section className="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 p-4 sm:p-6">
+          <h2 className="text-lg sm:text-xl font-semibold text-gray-800 dark:text-gray-200 mb-4 sm:mb-6 flex items-center">
+            <span className="w-2 h-6 bg-blue-500 rounded-full mr-3"></span>
+            Adicionar Participantes
+          </h2>
           <ParticipantInput onAddParticipant={handleAddParticipant} />
           <ParticipantList 
             participants={participants} 
@@ -112,7 +119,12 @@ const SorteioScreen: React.FC = () => {
           />
         </section>
         
-        <section>
+        {/* Seção de Configuração dos Times com separação visual */}
+        <section className="bg-gray-50 dark:bg-gray-800/50 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 p-4 sm:p-6">
+          <h2 className="text-lg sm:text-xl font-semibold text-gray-800 dark:text-gray-200 mb-4 sm:mb-6 flex items-center">
+            <span className="w-2 h-6 bg-green-500 rounded-full mr-3"></span>
+            Configuração dos Times
+          </h2>
           <TeamControls 
             participantsCount={participants.length}
             menCount={menCount}
@@ -133,9 +145,16 @@ const SorteioScreen: React.FC = () => {
           )}
         </section>
         
-        <section id="teams-section">
-          <TeamDisplay teams={teams} />
-        </section>
+        {/* Seção de Exibição dos Times */}
+        {teams.length > 0 && (
+          <section id="teams-section" className="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 p-4 sm:p-6">
+            <h2 className="text-lg sm:text-xl font-semibold text-gray-800 dark:text-gray-200 mb-4 sm:mb-6 flex items-center">
+              <span className="w-2 h-6 bg-purple-500 rounded-full mr-3"></span>
+              Times Gerados
+            </h2>
+            <TeamDisplay teams={teams} />
+          </section>
+        )}
         
         {copySuccess && (
           <div className="fixed bottom-4 right-4 bg-green-100 dark:bg-green-900 border border-green-200 dark:border-green-700 text-green-800 dark:text-green-300 px-3 sm:px-4 py-2 sm:py-3 rounded-lg shadow-md animate-fade-in text-sm sm:text-base">
