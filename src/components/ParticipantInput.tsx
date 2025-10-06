@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { UserPlus, Sparkles } from 'lucide-react';
-import type { Participant } from '../utils/teamGenerator';
+import { UserPlus, Sparkles, Star } from 'lucide-react';
+import type { Participant, SkillLevel } from '../utils/teamGenerator';
 import { detect } from 'gender-detection';
 
 interface ParticipantInputProps {
@@ -10,6 +10,7 @@ interface ParticipantInputProps {
 const ParticipantInput: React.FC<ParticipantInputProps> = ({ onAddParticipant }) => {
   const [name, setName] = useState('');
   const [gender, setGender] = useState<'male' | 'female'>('male');
+  const [skillLevel, setSkillLevel] = useState<SkillLevel>('intermediario');
   const [isAutoDetected, setIsAutoDetected] = useState(false);
 
   // Auto-detect gender when name changes
@@ -33,8 +34,9 @@ const ParticipantInput: React.FC<ParticipantInputProps> = ({ onAddParticipant })
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (name.trim()) {
-      onAddParticipant({ name: name.trim(), gender });
+      onAddParticipant({ name: name.trim(), gender, skillLevel });
       setName('');
+      setSkillLevel('intermediario');
       setIsAutoDetected(false);
     }
   };
@@ -56,6 +58,26 @@ const ParticipantInput: React.FC<ParticipantInputProps> = ({ onAddParticipant })
           aria-label="Nome do participante"
         />
       </div>
+      
+      {/* Skill Level Selection */}
+      <div className="flex flex-col gap-2">
+        <label className="text-xs font-medium text-gray-700 dark:text-gray-300 flex items-center">
+          <Star className="h-3 w-3 mr-1" />
+          Nível de Habilidade
+        </label>
+        <select
+          value={skillLevel}
+          onChange={(e) => setSkillLevel(e.target.value as SkillLevel)}
+          className="p-2 text-sm border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100"
+          aria-label="Nível de habilidade"
+        >
+          <option value="iniciante">⭐ Iniciante</option>
+          <option value="intermediario">⭐⭐ Intermediário</option>
+          <option value="avancado">⭐⭐⭐ Avançado</option>
+          <option value="profissional">⭐⭐⭐⭐ Profissional</option>
+        </select>
+      </div>
+      
       <div className="flex flex-col gap-2">
         {isAutoDetected && (
           <div className="flex items-center justify-center text-xs text-green-600 dark:text-green-400">

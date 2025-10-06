@@ -1,17 +1,59 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { useTheme } from '../contexts/ThemeContext';
+import { useToast } from '../contexts/ToastContext';
+import { useLocalStorage } from '../hooks/useLocalStorage';
+import { useLoading } from '../hooks/useLoading';
 
 const ConfiguracoesScreen: React.FC = () => {
-  const [autoSave, setAutoSave] = useState(true);
-  const [notifications, setNotifications] = useState(false);
+  const { showSuccess, showError, showWarning } = useToast();
   const { theme, setTheme } = useTheme();
-  const [language, setLanguage] = useState('pt-BR');
+  
+  const [autoSave, setAutoSave] = useLocalStorage('app_autoSave', true, {
+    validator: (data) => typeof data === 'boolean',
+    fallbackValue: true
+  });
+  
+  const [notifications, setNotifications] = useLocalStorage('app_notifications', false, {
+    validator: (data) => typeof data === 'boolean',
+    fallbackValue: false
+  });
+  
+  const [language, setLanguage] = useLocalStorage('app_language', 'pt-BR', {
+    validator: (data) => typeof data === 'string' && ['pt-BR', 'en-US', 'es-ES'].includes(data),
+    fallbackValue: 'pt-BR'
+  });
 
-  const handleClearData = () => {
-    if (window.confirm('Tem certeza que deseja limpar todos os dados salvos? Esta ação não pode ser desfeita.')) {
-      localStorage.clear();
-      alert('Dados limpos com sucesso!');
+  const clearDataOperation = useLoading();
+
+  const handleClearData = async () => {
+    const confirmed = window.confirm('Tem certeza que deseja limpar todos os dados salvos? Esta ação não pode ser desfeita.');
+    
+    if (!confirmed) {
+      return;
     }
+
+    await clearDataOperation.execute(async () => {
+      try {
+        // Clear localStorage with error handling
+        if (typeof Storage !== 'undefined') {
+          localStorage.clear();
+        } else {
+          throw new Error('Armazenamento local não está disponível neste navegador.');
+        }
+        
+        // Reset local state to defaults
+        setAutoSave(true);
+        setNotifications(false);
+        setLanguage('pt-BR');
+        
+        return true;
+      } catch (error) {
+        throw new Error('Erro ao limpar dados. Tente novamente.');
+      }
+    }, {
+      successMessage: 'Todos os dados foram limpos com sucesso!',
+      errorMessage: 'Erro ao limpar dados. Verifique se o navegador permite acesso ao armazenamento local.'
+    });
   };
 
   return (
@@ -69,7 +111,14 @@ const ConfiguracoesScreen: React.FC = () => {
               <label className="block text-xs sm:text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Tema</label>
               <select
                 value={theme}
-                onChange={(e) => setTheme(e.target.value as any)}
+                onChange={(e) => {
+                  try {
+                    setTheme(e.target.value as any);
+                    showSuccess('Tema alterado com sucesso!');
+                  } catch (error) {
+                    showError('Erro ao alterar tema', 'Não foi possível salvar a preferência de tema.');
+                  }
+                }}
                 className="w-full px-3 py-2 text-sm border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100"
               >
                 <option value="light">Claro</option>
@@ -82,7 +131,14 @@ const ConfiguracoesScreen: React.FC = () => {
               <label className="block text-xs sm:text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Idioma</label>
               <select
                 value={language}
-                onChange={(e) => setLanguage(e.target.value)}
+                onChange={(e) => {
+                  try {
+                    setLanguage(e.target.value);
+                    showSuccess('Idioma alterado com sucesso!');
+                  } catch (error) {
+                    showError('Erro ao alterar idioma', 'Não foi possível salvar a preferência de idioma.');
+                  }
+                }}
                 className="w-full px-3 py-2 text-sm border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100"
               >
                 <option value="pt-BR">Português (Brasil)</option>
@@ -100,9 +156,20 @@ const ConfiguracoesScreen: React.FC = () => {
           <div className="space-y-3 sm:space-y-4">
             <button
               onClick={handleClearData}
-              className="w-full px-4 py-2 text-sm sm:text-base bg-red-600 text-white rounded-md hover:bg-red-700 transition-colors"
+              disabled={clearDataOperation.isLoading}
+              className="w-full px-4 py-2 text-sm sm:text-base bg-red-600 text-white rounded-md hover:bg-red-700 disabled:bg-red-400 disabled:cursor-not-allowed transition-colors flex items-center justify-center"
             >
-              Limpar Todos os Dados
+              {clearDataOperation.isLoading ? (
+                <>
+                  <svg className="animate-spin -ml-1 mr-2 h-4 w-4 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                    <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                    <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                  </svg>
+                  Limpando Dados...
+                </>
+              ) : (
+                'Limpar Todos os Dados'
+              )}
             </button>
             <p className="text-xs text-gray-500 dark:text-gray-400">
               Esta ação removerá todos os participantes salvos e configurações. Esta ação não pode ser desfeita.

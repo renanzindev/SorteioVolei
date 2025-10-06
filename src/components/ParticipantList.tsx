@@ -1,6 +1,6 @@
 import React from 'react';
-import { X, Scale as Male, Scale as Female } from 'lucide-react';
-import type { Participant } from '../utils/teamGenerator';
+import { X, Scale as Male, Scale as Female, Star } from 'lucide-react';
+import type { Participant, SkillLevel } from '../utils/teamGenerator';
 
 interface ParticipantListProps {
   participants: Participant[];
@@ -11,6 +11,21 @@ const ParticipantList: React.FC<ParticipantListProps> = ({
   participants, 
   onRemoveParticipant 
 }) => {
+  const getSkillLevelDisplay = (skillLevel: SkillLevel) => {
+    const skillConfig = {
+      'iniciante': { stars: 1, color: 'text-gray-500', label: 'Iniciante' },
+      'intermediario': { stars: 2, color: 'text-yellow-500', label: 'Intermediário' },
+      'avancado': { stars: 3, color: 'text-orange-500', label: 'Avançado' },
+      'profissional': { stars: 4, color: 'text-red-500', label: 'Profissional' }
+    };
+    
+    const config = skillConfig[skillLevel];
+    return {
+      stars: Array(config.stars).fill(0),
+      color: config.color,
+      label: config.label
+    };
+  };
   if (participants.length === 0) {
     return (
       <div className="mt-4 sm:mt-6 p-4 sm:p-6 border border-gray-200 dark:border-gray-600 border-dashed rounded-lg bg-gray-50 dark:bg-gray-800 text-center">
@@ -57,7 +72,20 @@ const ParticipantList: React.FC<ParticipantListProps> = ({
               ) : (
                 <Female className="h-3 w-3 sm:h-4 sm:w-4 text-pink-600 flex-shrink-0" />
               )}
-              <span className="font-medium text-gray-700 text-sm sm:text-base truncate">{participant.name}</span>
+              <div className="flex flex-col min-w-0 flex-1">
+                <span className="font-medium text-gray-700 text-sm sm:text-base truncate">{participant.name}</span>
+                <div className="flex items-center gap-1" title={getSkillLevelDisplay(participant.skillLevel).label}>
+                  {getSkillLevelDisplay(participant.skillLevel).stars.map((_, starIndex) => (
+                    <Star 
+                      key={starIndex} 
+                      className={`h-2.5 w-2.5 sm:h-3 sm:w-3 ${getSkillLevelDisplay(participant.skillLevel).color} fill-current`} 
+                    />
+                  ))}
+                  <span className="text-xs text-gray-500 ml-1 hidden sm:inline">
+                    {getSkillLevelDisplay(participant.skillLevel).label}
+                  </span>
+                </div>
+              </div>
             </div>
             <button
               onClick={() => onRemoveParticipant(index)}

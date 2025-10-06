@@ -1,5 +1,5 @@
 import React from 'react';
-import { Shuffle, Copy, Scale as Male, Scale as Female } from 'lucide-react';
+import { Shuffle, Copy, Scale as Male, Scale as Female, Loader2 } from 'lucide-react';
 import type { TeamRequirements } from '../utils/teamGenerator';
 
 interface TeamControlsProps {
@@ -13,6 +13,8 @@ interface TeamControlsProps {
   onGenerateTeams: () => void;
   teamsGenerated: boolean;
   onCopyTeams: () => void;
+  isGenerating?: boolean;
+  isCopying?: boolean;
 }
 
 const TeamControls: React.FC<TeamControlsProps> = ({
@@ -25,7 +27,9 @@ const TeamControls: React.FC<TeamControlsProps> = ({
   onRequirementsChange,
   onGenerateTeams,
   teamsGenerated,
-  onCopyTeams
+  onCopyTeams,
+  isGenerating = false,
+  isCopying = false
 }) => {
   return (
     <div className="mt-6 sm:mt-8 p-3 sm:p-5 bg-gray-50 dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700">
@@ -86,21 +90,39 @@ const TeamControls: React.FC<TeamControlsProps> = ({
       <div className="flex flex-col sm:flex-row gap-2 sm:gap-3">
         <button
           onClick={onGenerateTeams}
-          disabled={participantsCount < 2}
+          disabled={participantsCount < 2 || isGenerating}
           className="flex-1 sm:flex-none bg-green-600 hover:bg-green-700 disabled:bg-gray-400 dark:disabled:bg-gray-600 text-white font-bold py-3 px-6 sm:py-4 sm:px-8 text-sm sm:text-base rounded-lg transition-all duration-200 flex items-center justify-center border-2 border-green-600 hover:border-green-700 disabled:border-gray-400 dark:disabled:border-gray-600 shadow-lg hover:shadow-xl transform hover:scale-105 disabled:transform-none disabled:shadow-none"
         >
-          <Shuffle className="mr-1 sm:mr-2 h-4 w-4 sm:h-5 sm:w-5" />
-          <span className="hidden sm:inline">{teamsGenerated ? 'Sortear Novamente' : 'Sortear Times'}</span>
-          <span className="sm:hidden">{teamsGenerated ? 'Novo Sorteio' : 'Sortear'}</span>
+          {isGenerating ? (
+            <Loader2 className="mr-1 sm:mr-2 h-4 w-4 sm:h-5 sm:w-5 animate-spin" />
+          ) : (
+            <Shuffle className="mr-1 sm:mr-2 h-4 w-4 sm:h-5 sm:w-5" />
+          )}
+          {isGenerating ? (
+            <>
+              <span className="hidden sm:inline">Gerando Times...</span>
+              <span className="sm:hidden">Gerando...</span>
+            </>
+          ) : (
+            <>
+              <span className="hidden sm:inline">{teamsGenerated ? 'Sortear Novamente' : 'Sortear Times'}</span>
+              <span className="sm:hidden">{teamsGenerated ? 'Novo Sorteio' : 'Sortear'}</span>
+            </>
+          )}
         </button>
         
         {teamsGenerated && (
           <button
             onClick={onCopyTeams}
-            className="flex-1 sm:flex-none bg-gray-700 hover:bg-gray-800 dark:bg-gray-600 dark:hover:bg-gray-700 text-white font-medium py-2 px-4 sm:py-3 sm:px-6 text-sm sm:text-base rounded-lg transition-colors flex items-center justify-center border border-gray-700 hover:border-gray-800 dark:border-gray-600 dark:hover:border-gray-700"
+            disabled={isCopying}
+            className="flex-1 sm:flex-none bg-gray-700 hover:bg-gray-800 disabled:bg-gray-400 dark:bg-gray-600 dark:hover:bg-gray-700 dark:disabled:bg-gray-600 text-white font-medium py-2 px-4 sm:py-3 sm:px-6 text-sm sm:text-base rounded-lg transition-colors flex items-center justify-center border border-gray-700 hover:border-gray-800 disabled:border-gray-400 dark:border-gray-600 dark:hover:border-gray-700 dark:disabled:border-gray-600"
           >
-            <Copy className="mr-1 sm:mr-2 h-4 w-4 sm:h-5 sm:w-5" />
-            Copiar
+            {isCopying ? (
+              <Loader2 className="mr-1 sm:mr-2 h-4 w-4 sm:h-5 sm:w-5 animate-spin" />
+            ) : (
+              <Copy className="mr-1 sm:mr-2 h-4 w-4 sm:h-5 sm:w-5" />
+            )}
+            {isCopying ? 'Copiando...' : 'Copiar'}
           </button>
         )}
       </div>

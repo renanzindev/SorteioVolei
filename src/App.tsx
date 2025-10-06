@@ -5,10 +5,15 @@ import SorteioScreen from './screens/SorteioScreen';
 import HistoricoScreen from './screens/HistoricoScreen';
 import ConfiguracoesScreen from './screens/ConfiguracoesScreen';
 import EstatisticasScreen from './screens/EstatisticasScreen';
+import { useSilentOffline } from './hooks/useSilentOffline';
 import { ThemeProvider } from './contexts/ThemeContext';
+import { ToastProvider } from './contexts/ToastContext';
 
 function App() {
   const [activeScreen, setActiveScreen] = useState<string>('sorteio');
+  
+  // Registra Service Worker silenciosamente
+  useSilentOffline();
 
   const renderScreen = () => {
     switch (activeScreen) {
@@ -27,20 +32,22 @@ function App() {
 
   return (
     <ThemeProvider>
-      <div className="flex flex-col h-screen bg-gray-100 dark:bg-gray-900">
-        <Header />
-        
-        <main className="flex-1 overflow-auto">
-          <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-            {renderScreen()}
-          </div>
-        </main>
-        
-        <Footer 
-          activeScreen={activeScreen}
-          onScreenChange={setActiveScreen}
-        />
-      </div>
+      <ToastProvider>
+        <div className="flex flex-col h-screen bg-gray-100 dark:bg-gray-900">
+          <Header />
+          
+          <main className="flex-1 overflow-auto">
+            <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+              {renderScreen()}
+            </div>
+          </main>
+          
+          <Footer 
+            activeScreen={activeScreen}
+            onScreenChange={setActiveScreen}
+          />
+        </div>
+      </ToastProvider>
     </ThemeProvider>
   );
 }

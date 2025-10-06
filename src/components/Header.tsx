@@ -1,6 +1,4 @@
 import React from 'react';
-import { Shuffle } from 'lucide-react';
-import volleyballIcon from '../assets/bola-de-voleibol.png';
 
 const Header: React.FC = () => {
   return (
@@ -9,7 +7,7 @@ const Header: React.FC = () => {
         {/* Logo and Title */}
         <div className="flex items-center">
           <img 
-            src={volleyballIcon} 
+            src="/icon-192.png" 
             alt="Volleyball" 
             className="h-8 w-8 mr-3"
           />
