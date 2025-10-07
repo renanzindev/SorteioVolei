@@ -1,4 +1,5 @@
 import React from 'react';
+import logo from '../assets/bola-de-voleibol.png';
 
 const Header: React.FC = () => {
   return (
@@ -7,8 +8,8 @@ const Header: React.FC = () => {
         {/* Logo and Title */}
         <div className="flex items-center">
           <img 
-            src="/icon-192.png" 
-            alt="Volleyball" 
+            src={logo}
+            alt="Voleibol"
             className="h-8 w-8 mr-3"
           />
           <h1 className="text-xl sm:text-2xl md:text-3xl font-bold text-white">Sorteio Volei</h1>

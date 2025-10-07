@@ -3,9 +3,8 @@ import ParticipantInput from '../components/ParticipantInput';
 import ParticipantList from '../components/ParticipantList';
 import TeamControls from '../components/TeamControls';
 import TeamDisplay from '../components/TeamDisplay';
-import TemplateManager from '../components/TemplateManager';
 import { generateTeams, formatTeamsForClipboard } from '../utils/teamGenerator';
-import type { Participant, TeamRequirements, SkillBalanceConfig, TemplateConfig } from '../utils/teamGenerator';
+import type { Participant, TeamRequirements, SkillBalanceConfig } from '../utils/teamGenerator';
 import { useLocalStorage } from '../hooks/useLocalStorage';
 import { useTeamGeneration, useCopyOperation } from '../hooks/useLoading';
 import { useToast } from '../contexts/ToastContext';
@@ -196,11 +195,7 @@ const SorteioScreen: React.FC = () => {
     });
   };
 
-  const handleLoadTemplate = (config: TemplateConfig) => {
-    setTeamCount(config.teamCount);
-    setRequirements(config.requirements ?? { menPerTeam: 0, womenPerTeam: 0 });
-    setSkillConfig(config.skillConfig ?? { enabled: false, strategy: 'balanced' });
-  };
+  // Removido: suporte a carregar Template de Times
   
   const handleCopyTeams = async () => {
     if (teams.length === 0) {
@@ -247,17 +242,7 @@ const SorteioScreen: React.FC = () => {
           />
         </section>
         
-        {/* Seção de Templates */}
-        <section className="bg-purple-50 dark:bg-purple-900/20 rounded-lg shadow-sm border border-purple-200 dark:border-purple-700 p-4 sm:p-6">
-          <TemplateManager 
-            currentConfig={{
-              teamCount,
-              requirements,
-              skillConfig
-            }}
-            onLoadTemplate={handleLoadTemplate}
-          />
-        </section>
+        {/* Seção de Templates removida conforme solicitado */}
         
         {/* Seção de Configuração de Habilidades */}
         <section className="bg-blue-50 dark:bg-blue-900/20 rounded-lg shadow-sm border border-blue-200 dark:border-blue-700 p-4 sm:p-6">

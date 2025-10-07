@@ -16,22 +16,6 @@ interface SkillBalanceConfig {
   strategy: 'balanced' | 'mixed' | 'random';
 }
 
-interface TeamTemplate {
-  id: string;
-  name: string;
-  description?: string;
-  teamCount: number;
-  requirements: TeamRequirements | null;
-  skillConfig: SkillBalanceConfig;
-  createdAt: Date;
-  lastUsed?: Date;
-}
-
-interface TemplateConfig {
-  teamCount: number;
-  requirements?: TeamRequirements | null;
-  skillConfig?: SkillBalanceConfig;
-}
 
 /**
  * Shuffles an array using the Fisher-Yates algorithm
@@ -210,4 +194,4 @@ export const formatTeamsForClipboard = (teams: Participant[][], includeSkills: b
   }).join('\n\n');
 };
 
-export type { Participant, TeamRequirements, SkillBalanceConfig, TeamTemplate, TemplateConfig };
+export type { Participant, TeamRequirements, SkillBalanceConfig };
